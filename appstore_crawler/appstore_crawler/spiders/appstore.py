@@ -12,32 +12,36 @@ from appstore_crawler.items import AppstoreCrawlerItem
 from tqdm import tqdm
 
 
-app_store_home = 'https://itunes.apple.com/us/genre/ios/id36?mt=8'
+app_store_home = 'https://apps.apple.com/us/genre/ios/id36'
 
 
 def crawl_rules(category):
+    # Extract links matching '/genre/ios-***' (but not matching 'letter=')
+    # and follow links from them (since no callback means follow=True by default).
+
+    allow_urls = (f"/genre/ios-{category}")
+
+    # please use (1) or (2)
+
+    # (1) this is to check only popular apps on category top page for testing
+    genre_links = LinkExtractor(allow=allow_urls, deny=('letter='))
+    # (2) this is to check category top page plus all sub pages for each letter
+    # genre_links = LinkExtractor(allow=allow_urls)
+
+    # Extract links matching '/app/' and parse them with the spider's method parse_item
+    # also there is a link to Apple Store App in footer which should be skipped
+    app_links = LinkExtractor(allow=('/app/',), deny=('ct=footer',))
+
     return (
-        # Extract links matching '/genre/ios-***' (but not matching 'letter=')
-        # and follow links from them (since no callback means follow=True by default).
-
-        # please use (1) or (2)
-
-        # (1) this is to check only popular apps on category top page for testing
-        Rule(LinkExtractor(allow=('/genre/ios-%s' % category,), deny=('letter=',))),
-
-        # (2) this is to check category top page plus all sub pages for each letter
-        # Rule(LinkExtractor(allow=('/genre/ios-%s' % category,))),
-
-        # Extract links matching '/app/' and parse them with the spider's method parse_item
-        # also there is a link to Apple Store App in footer which should be skipped
-        Rule(LinkExtractor(allow=('/app/',), deny=('ct=footer',)), callback='parse_item', follow=False),
+        Rule(genre_links),
+        Rule(app_links, callback='parse_item', follow=False),
     )
 
 
 # https://doc.scrapy.org/en/latest/topics/spiders.html#crawlspider-example
 class AppstoreSpider(CrawlSpider):
     name = 'appstore'
-    allowed_domains = ['itunes.apple.com']
+    allowed_domains = ['apps.apple.com']
     start_urls = [app_store_home]
     custom_settings = {
         'LOG_FILE': 'logs/scrapy_%d.log' % random.randrange(10000, 100000),
@@ -57,10 +61,12 @@ class AppstoreSpider(CrawlSpider):
     def parse_item(self, response):
         self.logger.info('URL: %s', response.url)
 
-        text_ld = response.xpath('//script[@type="application/ld+json"]/text()')
+        text_ld = response.xpath(
+            '//script[@type="application/ld+json"]/text()')
         json_ld = json.loads(text_ld.extract_first())
 
-        text_sb = response.xpath('//script[@id="shoebox-ember-data-store"]/text()')
+        text_sb = response.xpath(
+            '//script[@id="shoebox-ember-data-store"]/text()')
         shoebox = json.loads(text_sb.extract_first())
         attributes = shoebox['data']['attributes']
 
@@ -70,13 +76,16 @@ class AppstoreSpider(CrawlSpider):
         # if the app is not in the category, skip and continue
         # https://stackoverflow.com/questions/5040110
         if self.category and self.category != self._snake_case(item['category']):
-            self.logger.info('SKIPPING... %s %s %s', item['category'], item["id"], item['name'])
+            self.logger.info('SKIPPING... %s %s %s',
+                             item['category'], item["id"], item['name'])
             return
 
         # need LANG=en_US.utf8 in /etc/default/locale (c.f. Dockerfile)
-        self.logger.info('SAVING... %s %s %s', item['category'], item["id"], item['name'])
+        self.logger.info('SAVING... %s %s %s',
+                         item['category'], item["id"], item['name'])
 
-        img_src = response.xpath('//div[contains(@class, "product-hero__media")]//img/@src').extract_first()
+        img_src = response.xpath(
+            '//div[contains(@class, "product-hero__media")]//img/@src').extract_first()
         icon_file = self._icon_file(item['category'], item['id'])
 
         if not os.path.exists(icon_file):
@@ -107,7 +116,8 @@ class AppstoreSpider(CrawlSpider):
         item['price_category'] = json_ld['offers'].get('category', '')
         item['price'] = json_ld['offers']['price']
         item['price_currency'] = json_ld['offers']['priceCurrency']
-        item['has_in_app_purchases'] = attributes.get('hasInAppPurchases', "false")
+        item['has_in_app_purchases'] = attributes.get(
+            'hasInAppPurchases', "false")
         item['author_url'] = json_ld['author']['url']
         item['author_name'] = json_ld['author']['name']
         item['website_url'] = attributes['softwareInfo']['websiteUrl']
@@ -149,9 +159,11 @@ class AppstoreSpider(CrawlSpider):
     # https://stackoverflow.com/questions/12394184
     @classmethod
     def from_crawler(cls, crawler, *args, **kwargs):
-        spider = super(AppstoreSpider, cls).from_crawler(crawler, *args, **kwargs)
+        spider = super(AppstoreSpider, cls).from_crawler(
+            crawler, *args, **kwargs)
         crawler.signals.connect(spider.spider_opened, signals.spider_opened)
-        crawler.signals.connect(spider.request_scheduled, signals.request_scheduled)
+        crawler.signals.connect(spider.request_scheduled,
+                                signals.request_scheduled)
         crawler.signals.connect(spider.item_scraped, signals.item_scraped)
         crawler.signals.connect(spider.spider_closed, signals.spider_closed)
         return spider
@@ -183,10 +195,12 @@ class AppstoreSpider(CrawlSpider):
         self.pbar.update()  # update progress bar by 1
 
     def spider_closed(self, spider):
-        self.logger.info('scheduler size spider_closed: %s', len(self.crawler.engine.slot.scheduler))
+        self.logger.info('scheduler size spider_closed: %s',
+                         len(self.crawler.engine.slot.scheduler))
         self.pbar.clear()
         self.pbar.write('Closing {} spider'.format(spider.name))
         self.pbar.close()  # close progress bar
 
     def _update_max_request_size(self):
-        self.max_request_size = max(self.max_request_size, len(self.crawler.engine.slot.scheduler))
+        self.max_request_size = max(self.max_request_size, len(
+            self.crawler.engine.slot.scheduler))
