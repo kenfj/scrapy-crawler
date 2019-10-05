@@ -13,7 +13,9 @@
 ```bash
 brew install pyenv
 brew install pipenv
+
 pipenv install
+pipenv install --dev
 ```
 
 
@@ -94,7 +96,7 @@ jq -r ".[] | [$COLS] | @csv" jsondata/photo-video.json
 ```
 
 * `csvkit` is also handy. https://eng-blog.iij.ad.jp/archives/934
- 
+
 ```bash
 pip install csvkit
 in2csv jsondata/photo-video.json
@@ -124,6 +126,13 @@ pipenv shell
 scrapy startproject appstore_crawler
 cd appstore_crawler
 scrapy genspider appstore example.com
+```
+
+```bash
+# check
+pipenv update --outdated
+# do update
+pipenv update
 ```
 
 
