@@ -5,7 +5,7 @@
 
 * this is appstore crawler by python Scrapy
 * basic setup plus added progress bar etc.
-* the result saved as json file with icon jpg
+* the result saved as csv file with icon image
 
 
 ## Setup
@@ -24,41 +24,40 @@ pipenv install --dev
 ```bash
 pipenv shell
 cd appstore_crawler
+export LANG=en_US.utf8  # to avoid ParserError
 ```
 
 * run one category
 
 ```bash
-pipenv shell
+# set category (or try productivity for example)
 CATEGORY=photo-video
 scrapy crawl appstore \
     -a category=${CATEGORY} \
-    -o jsondata/${CATEGORY}.json \
-    -s JOBDIR=crawls/${CATEGORY}-1
+    -s JOBDIR=crawls/${CATEGORY}-1  # update this number or delete the dir
 ```
 
 * or run all categories
 
 ```bash
 scrapy crawl appstore \
-    -o jsondata/appstore.json \
+    -o csvdata/appstore.csv \
     -s JOBDIR=crawls/appstore-1
 ```
 
 * you can stop the spider safely at any time (by pressing Ctrl-C)
 * and resume it later by issuing the same command
-  - but maybe with different json file name
-  - otherwise the json will be appended so need to fix manually
+  - the csv will be appended
 * c.f. https://doc.scrapy.org/en/latest/topics/jobs.html
 
 
-## Read jpg result
+## Read icon image
 
 ```python
 from PIL import Image
 import numpy as np
 
-icon = Image.open('icondata/photo-video/1006639052.jpg')
+icon = Image.open('appstore_crawler/icondata/photo-video/1006639052.png')
 img = np.array(icon, 'f')
 
 print(img.dtype)   # dtype('float32')
@@ -67,19 +66,21 @@ print(img.shape)   # (246, 246, 3)
 ```
 
 
-## Read json result
-
-```python
-import json
-
-with open('jsondata/photo-video.json') as f:
-    j = json.load(f)
-```
+## Read CSV result
 
 ```python
 import pandas as pd
 
-df = pd.read_json('jsondata/photo-video.json')
+df = pd.read_csv('appstore_crawler/csvdata/photo-video.csv')
+
+df.head()
+
+df.columns
+Index(['id', 'category', 'name', 'subtitle', 'url', 'date_published',
+       'rating_value', 'rating_count', 'rating_ratio', 'price_category',
+       'price', 'price_currency', 'has_in_app_purchases', 'author_name',
+       'author_url', 'description'],
+      dtype='object')
 
 # show rating ranking for example
 df.sort_values(
@@ -88,26 +89,13 @@ df.sort_values(
 ```
 
 
-## Convert json result to csv
-
-```bash
-COLS=".id, .category, .rating_value, .rating_count, .date_published"
-jq -r ".[] | [$COLS] | @csv" jsondata/photo-video.json
-```
-
-* `csvkit` is also handy. https://eng-blog.iij.ad.jp/archives/934
-
-```bash
-pip install csvkit
-in2csv jsondata/photo-video.json
-```
-
-
 ## Debug scrapy
 
 ```bash
 # for example Evernote
-scrapy shell https://itunes.apple.com/us/app/evernote/id281796108?mt=8
+scrapy shell https://apps.apple.com/us/app/evernote/id281796108
+# another example Dropbox
+scrapy shell https://apps.apple.com/us/app/dropbox/id327630330
 ```
 
 
@@ -116,7 +104,7 @@ scrapy shell https://itunes.apple.com/us/app/evernote/id281796108?mt=8
 ```bash
 export PIPENV_VENV_IN_PROJECT=true
 pipenv --python 3.6
-pipenv install scrapy tqdm
+pipenv install scrapy tqdm python-dateutil pandas
 pipenv run pip list
 pipenv graph
 ```

@@ -5,11 +5,13 @@ import html
 import random
 import urllib.parse
 import urllib.request
+
 from scrapy import signals
 from scrapy.spiders import CrawlSpider, Rule
 from scrapy.linkextractors import LinkExtractor
-from appstore_crawler.items import AppstoreCrawlerItem
 from tqdm import tqdm
+from appstore_crawler.spiders.app_item import item_generator
+from appstore_crawler.spiders.shoebox_item import shoebox_generator
 
 
 app_store_home = 'https://apps.apple.com/us/genre/ios/id36'
@@ -46,6 +48,7 @@ class AppstoreSpider(CrawlSpider):
     custom_settings = {
         'LOG_FILE': 'logs/scrapy_%d.log' % random.randrange(10000, 100000),
     }
+    retry_xpath = '//script[@type="application/ld+json"]/text()'
 
     # category is passed from command line argument
     # scrapy crawl appstore -a category=productivity
@@ -61,99 +64,9 @@ class AppstoreSpider(CrawlSpider):
     def parse_item(self, response):
         self.logger.info('URL: %s', response.url)
 
-        text_ld = response.xpath(
-            '//script[@type="application/ld+json"]/text()')
-        json_ld = json.loads(text_ld.extract_first())
-
-        text_sb = response.xpath(
-            '//script[@id="shoebox-ember-data-store"]/text()')
-        shoebox = json.loads(text_sb.extract_first())
-        attributes = shoebox['data']['attributes']
-
-        item = self._create_item(json_ld, attributes)
-
-        # sometimes the popular app list mixes different category
-        # if the app is not in the category, skip and continue
-        # https://stackoverflow.com/questions/5040110
-        if self.category and self.category != self._snake_case(item['category']):
-            self.logger.info('SKIPPING... %s %s %s',
-                             item['category'], item["id"], item['name'])
-            return
-
-        # need LANG=en_US.utf8 in /etc/default/locale (c.f. Dockerfile)
-        self.logger.info('SAVING... %s %s %s',
-                         item['category'], item["id"], item['name'])
-
-        img_src = response.xpath(
-            '//div[contains(@class, "product-hero__media")]//img/@src').extract_first()
-        icon_file = self._icon_file(item['category'], item['id'])
-
-        if not os.path.exists(icon_file):
-            self.logger.info(' %s', icon_file)
-            self._save_icon(img_src, icon_file)
-
-        return item
-
-    @staticmethod
-    def _create_item(json_ld, attributes):
-        item = AppstoreCrawlerItem()
-
-        item['id'] = attributes['metricsBase']['pageId']
-        item['category'] = json_ld['applicationCategory']
-        item['name'] = json_ld['name']
-        item['subtitle'] = attributes.get('subtitle', '')
-        item['url'] = attributes['url']
-        item['description'] = json_ld['description']
-        item['date_published'] = json_ld['datePublished']
-        item['rating_value'] = attributes['userRating']['value']
-        item['rating_count'] = attributes['userRating']['ratingCount']
-        item['rating_count_list'] = attributes['userRating']['ratingCountList']
-
-        if attributes.get('chartPositionForStore', {}).get('appStore'):
-            item['chart_genre_name'] = attributes['chartPositionForStore']['appStore']['genreName']
-            item['chart_position'] = attributes['chartPositionForStore']['appStore']['position']
-
-        item['price_category'] = json_ld['offers'].get('category', '')
-        item['price'] = json_ld['offers']['price']
-        item['price_currency'] = json_ld['offers']['priceCurrency']
-        item['has_in_app_purchases'] = attributes.get(
-            'hasInAppPurchases', "false")
-        item['author_url'] = json_ld['author']['url']
-        item['author_name'] = json_ld['author']['name']
-        item['website_url'] = attributes['softwareInfo']['websiteUrl']
-
-        # fix &amp; to &
-        item['name'] = html.unescape(item['name'])
-        item['category'] = html.unescape(item['category'])
-
-        # fix %xx to readable string
-        item['url'] = urllib.parse.unquote(item['url'])
-
-        return item
-
-    @staticmethod
-    def _icon_file(category, id_):
-        category = AppstoreSpider._snake_case(category)
-        directory = 'icondata/%s' % category
-
-        if not os.path.exists(directory):
-            os.makedirs(directory)
-
-        return '%s/%s.jpg' % (directory, id_)
-
-    @staticmethod
-    def _snake_case(words):
-        # adjust to url (Food & Drink -> food-drink)
-        return words.replace(' & ', '-').replace(' ', '-').lower()
-
-    @staticmethod
-    def _save_icon(img_src, icon_file):
-        try:
-            urllib.request.urlretrieve(img_src, icon_file)
-        except Exception:
-            # retry in case of urllib.error.URLError
-            # <EOF occurred in violation of protocol (_ssl.c:645)>
-            urllib.request.urlretrieve(img_src, icon_file)
+        self.pbar.update()
+        yield from shoebox_generator(response)
+        yield from item_generator(response, self.category, self.logger)
 
     # show progress bar
     # https://stackoverflow.com/questions/12394184

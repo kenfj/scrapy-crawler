@@ -1,0 +1,49 @@
+{
+    "@context": "http://schema.org",
+    "@type": "SoftwareApplication",
+    "name": "Evernote",
+    "description": "Evernote helps you focus on what matters most and have access to your information when you need it. Input typed notes or scan handwritten notes. Add to-do’s, photos, images, web pages, or audio ... and it’s all instantly searchable. Organize notes any way you want and share with anyone. And Evernote syncs across your devices so your information is always with you, everywhere you go.\n\n---\n\n“Use Evernote as the place you put everything… Don’t ask yourself which device it’s on—it’s in Evernote” – The New York Times\n\n“When it comes to taking all manner of notes and getting work done, Evernote is an indispensable tool.” – PC Mag\n\n---\n\nGET ORGANIZED\nEvernote gives you the tools you need to keep your work effortlessly organized:\n• Write, collect, and capture ideas as searchable notes, notebooks, checklists, and to-do lists\n• Create notes in a variety of formats, including: text, sketches, photos, screenshots, image files, audio, web clippings, and more\n• Use the camera to effortlessly scan, digitize, and organize your paper documents, business cards, whiteboards, handwritten notes, and drawings\n• Use Evernote as a digital notepad and easy-to-format word processor for all your thoughts as they come\n\nSYNC ANYWHERE\nEvernote gives you the ability to sync your content across devices:\n• Sync everything automatically across any computer, phone, or tablet\n• Start your task working on one device and continue on another without ever missing a beat\n• Add a passcode lock to the mobile app for more privacy\n\nSHARE YOUR IDEAS\nEvernote gives you the tools to share, discuss, and collaborate productively with others:\n• Create, share, and discuss with the people who help get your work done, all in one app\n• Search within pictures and annotate images to give quick feedback\n\nEVERNOTE IN EVERYDAY LIFE\n• Make personal checklists to keep your thoughts organized\n• Set reminders to keep on top of activities and write to-do lists\n• Gather, capture, and store every thought you need to stay productive\n\nEVERNOTE IN BUSINESS\n• Create agendas, write memos, and craft presentations\n• Annotate documents with comments and thoughts during team meetings, then share with colleagues\n• Get your projects underway faster and maximize productivity by letting multiple participants access and work on different aspects alongside each other\n\nEVERNOTE IN EDUCATION\n• Keep up with lecture notes so you don’t miss a vital thought\n• Clip and highlight articles from the web for academic research\n• Plan and collaborate for better academic group work\n\nBETTER NOTE INTERACTION WITH 3D TOUCH\n• Quick Actions for faster note creation and search\n• Sketch in notes with pressure sensitive ink\n\nEVERNOTE FOR APPLE WATCH\n• Dictate notes and they will be transcribed in Evernote\n• Dictate searches and get results on your Apple Watch\n• View newly created &amp; updated notes\n• Set reminders, get notifications, and never forget anything\n\n---\n\nAlso available from Evernote:\n\nEVERNOTE PREMIUM - The ultimate workspace.\n• 10 GB of new uploads each month\n• Unlimited number of devices\n• Access your notes and notebooks offline\n• Save emails to Evernote\n• Search inside Office docs and attachments\n• Annotate PDFs\n• Scan and digitize business cards\n• Show notes as presentations, instantly (desktop only)\n$7.99 monthly, $69.99 annually\n\n---\n\nPrice may vary by location. Subscriptions will be charged to your credit card through your iTunes account. Your subscription will automatically renew unless canceled at least 24 hours before the end of the current period. You will not be able to cancel the subscription once activated. Manage your subscriptions in Account Settings after purchase.\n\n---\n\nPrivacy Policy: https://evernote.com/legal/privacy.php \nTerms of Service: https://evernote.com/legal/tos.php",
+    "screenshot": [
+        "https://is5-ssl.mzstatic.com/image/thumb/Purple113/v4/7c/b7/a2/7cb7a23d-01c5-9883-445e-cf046ccd0ecf/mzl.prusqeza.png/300x0w.jpg",
+        "https://is2-ssl.mzstatic.com/image/thumb/Purple123/v4/ad/3c/ae/ad3cae5b-a1ff-89f6-c7e5-d7fa61b8e24d/mzl.ujjcxsig.png/300x0w.jpg",
+        "https://is1-ssl.mzstatic.com/image/thumb/Purple113/v4/a6/e0/1d/a6e01de4-aaed-313c-99fd-d291e76b5b8b/pr_source.png/300x0w.jpg",
+        "https://is3-ssl.mzstatic.com/image/thumb/Purple113/v4/a3/f4/7b/a3f47b01-c90f-ce83-5d93-251742aa1932/mzl.jgznggai.png/300x0w.jpg",
+        "https://is2-ssl.mzstatic.com/image/thumb/Purple113/v4/88/38/cd/8838cd07-b9ee-ebac-f4cd-7e426268961e/mzl.diqthpns.png/300x0w.jpg",
+        "https://is1-ssl.mzstatic.com/image/thumb/Purple123/v4/a0/cc/09/a0cc09f2-b020-1f06-4ae6-a9fa75394a7e/mzl.waerlopy.png/300x0w.jpg",
+        "https://is4-ssl.mzstatic.com/image/thumb/Purple113/v4/81/a4/2f/81a42f2f-83e7-2c9b-edd1-995a9d6aa385/mzl.mprqovoh.png/300x0w.jpg",
+        "https://is2-ssl.mzstatic.com/image/thumb/Purple123/v4/ab/01/61/ab0161fa-2549-024d-f7b2-cccfcd168149/pr_source.png/300x0w.jpg",
+        "https://is1-ssl.mzstatic.com/image/thumb/Purple123/v4/c2/fb/c5/c2fbc5f3-f86e-b2ce-23ce-55bf791ee8b0/pr_source.png/300x0w.jpg",
+        "https://is4-ssl.mzstatic.com/image/thumb/Purple113/v4/33/df/ee/33dfee7f-c1f3-efc7-9afe-6ea7fdac8e6b/pr_source.png/300x0w.jpg",
+        "https://is1-ssl.mzstatic.com/image/thumb/Purple113/v4/69/d4/d8/69d4d80c-fca8-bb3f-02cf-18523c9d084c/mzl.ybccilfx.png/643x0w.jpg",
+        "https://is2-ssl.mzstatic.com/image/thumb/Purple123/v4/88/6a/02/886a0259-8baa-75f3-88dc-39f2de52583a/mzl.aizcviai.png/643x0w.jpg",
+        "https://is4-ssl.mzstatic.com/image/thumb/Purple113/v4/14/a6/84/14a684c9-1927-c519-e3f7-dda59e187d5a/mzl.qcwvgrdc.png/643x0w.jpg",
+        "https://is1-ssl.mzstatic.com/image/thumb/Purple113/v4/02/d4/8d/02d48d6a-1bf2-5928-dc31-7eacca19a49e/mzl.dhplhnof.png/643x0w.jpg",
+        "https://is5-ssl.mzstatic.com/image/thumb/Purple123/v4/cb/98/88/cb988826-bffb-41b9-dde7-b972030be399/mzl.opfmabac.png/643x0w.jpg",
+        "https://is4-ssl.mzstatic.com/image/thumb/Purple113/v4/ba/26/46/ba264697-0286-dd2e-6ab5-20ae418743f4/mzl.lietkaky.png/643x0w.jpg",
+        "https://is2-ssl.mzstatic.com/image/thumb/Purple113/v4/d2/2d/57/d22d576b-2214-69f6-c2e8-f9441027df6d/mzl.jwcnjspt.png/300x0w.jpg",
+        "https://is1-ssl.mzstatic.com/image/thumb/Purple123/v4/54/a1/bd/54a1bdae-c0ad-ee52-dc8c-59e719c1b400/mzl.oviakvut.png/300x0w.jpg",
+        "https://is4-ssl.mzstatic.com/image/thumb/Purple123/v4/57/8a/e3/578ae3f7-701f-1b64-f4b7-679f6e29f9bf/mzl.wttpyxge.png/300x0w.jpg",
+        "https://is2-ssl.mzstatic.com/image/thumb/Purple113/v4/c2/38/86/c23886f5-74f6-d736-ee31-bc436b8b6a16/mzl.wfmvpltc.png/300x0w.jpg",
+        "https://is4-ssl.mzstatic.com/image/thumb/Purple123/v4/34/5c/f9/345cf9ef-e288-551e-3d91-4929d83c4d7b/mzl.hlwrwbsp.png/300x0w.jpg"
+    ],
+    "image": "https://is4-ssl.mzstatic.com/image/thumb/Purple123/v4/9e/1a/10/9e1a10aa-770d-c9bc-23bf-5f31c96734d4/AppIcon-0-0-1x_U007emarketing-0-0-0-7-0-0-sRGB-0-0-0-GLES2_U002c0-512MB-85-220-0-0.png/1200x630wa.png",
+    "applicationCategory": "Productivity",
+    "datePublished": "Jul 10, 2008",
+    "operatingSystem": "Requires iOS 11.0 and watchOS 2.0 or later. Compatible with iPhone, iPad, and iPod touch.",
+    "author": {
+        "@type": "Person",
+        "name": "Evernote",
+        "url": "https://apps.apple.com/us/developer/evernote/id281796111"
+    },
+    "aggregateRating": {
+        "@type": "AggregateRating",
+        "ratingValue": 4.6,
+        "reviewCount": 25455
+    },
+    "offers": {
+        "@type": "Offer",
+        "price": 0,
+        "priceCurrency": "USD",
+        "category": "free"
+    }
+}
