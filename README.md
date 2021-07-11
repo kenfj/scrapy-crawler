@@ -30,8 +30,12 @@ export LANG=en_US.utf8  # to avoid ParserError
 * run one category
 
 ```bash
-# set category (or try productivity for example)
+# set category
 CATEGORY=photo-video
+
+# this example will crawl urls includes /genre/ios-{category}
+# i.e. https://apps.apple.com/us/genre/ios-photo-video/id6008
+
 scrapy crawl appstore \
     -a category=${CATEGORY} \
     -s JOBDIR=crawls/${CATEGORY}-1  # update this number or delete the dir
@@ -41,8 +45,8 @@ scrapy crawl appstore \
 
 ```bash
 scrapy crawl appstore \
-    -o csvdata/appstore.csv \
-    -s JOBDIR=crawls/appstore-1
+    -s JOBDIR=crawls/appstore-1 \
+    -o csvdata/appstore.csv
 ```
 
 * you can stop the spider safely at any time (by pressing Ctrl-C)
@@ -119,8 +123,16 @@ scrapy genspider appstore example.com
 ```bash
 # check
 pipenv update --outdated
+
 # do update
 pipenv update
+pipenv update --dev
+pipenv clean
+
+# re-crete virtual env
+pipenv --rm
+pipenv install
+pipenv install --dev
 ```
 
 
